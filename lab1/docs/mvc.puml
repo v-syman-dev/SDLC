@@ -1,0 +1,39 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+
+class DayModel {
+  - input : DayInput?
+  - result : DayResult?
+  + setData(...)
+  + parse(...)
+  + calculate(input : DayInput) : DayResult
+  + addListener(listener : ModelListener)
+}
+
+interface DayModel.ModelListener {
+  + onModelChanged()
+}
+
+class DayView {
+  + onModelChanged()
+  - updateResult()
+}
+
+class DayController {
+  + onEnterDataClicked()
+}
+
+class InputDialog {
+  + setValues(values : DayInput?)
+  + confirmed : Boolean
+}
+
+DayModel ..> DayModel.ModelListener
+DayView ..|> DayModel.ModelListener : реализует
+DayController --> DayModel
+DayController --> InputDialog
+DayView --> DayController
+DayModel ..> InputDialog : восстановление данных
+
+@enduml
